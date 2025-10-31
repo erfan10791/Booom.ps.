@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>بوم کسب‌وکار درباره بازی‌های رایانه‌ای</title>
+  <style>
+    :root {--bg:#0f1724;--card:#0b1220;--accent:#10b981;--muted:#9ca3af;--glass:rgba(255,255,255,0.03)}
+    * {box-sizing:border-box;font-family:Vazirmatn,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
+    body {margin:0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg) 100%);color:var(--accent);padding:18px}
+    h1 {font-size:20px;text-align:center;margin-bottom:12px;color:var(--accent)}
+    .controls{display:flex;gap:10px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;flex-direction:column;align-items:center;position:relative}
+    .example-buttons{display:flex;gap:10px;margin-bottom:8px}
+    .action-buttons{display:flex;gap:10px}
+    .theme-button{position:absolute;top:0;right:0;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--accent);cursor:pointer;transition:0.3s}
+    .theme-button:hover{background:rgba(255,255,255,0.05)}
+    .donate-button{position:absolute;top:0;left:0;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--accent);cursor:pointer;transition:0.3s}
+    .donate-button:hover{background:rgba(255,255,255,0.05)}
+    .controls button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--accent);transition:0.3s}
+    .controls button:hover{background:rgba(255,255,255,0.05)}
+    .grid {display:grid;grid-template-columns:1fr 1.6fr 1fr;grid-template-rows:1fr 1fr auto;gap:12px;height:auto}
+    .panel {background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:10px;padding:12px;overflow:auto;border:1px solid rgba(255,255,255,0.03)}
+    .panel h2 {margin:0 0 10px 0;font-size:14px;color:var(--accent);text-align:center}
+    .notes {display:flex;flex-direction:column;gap:8px;min-height:36px}
+    .note {background:var(--glass);padding:8px;border-radius:8px;min-height:36px;display:flex;align-items:flex-start;gap:8px}
+    .note .content {flex:1;outline:none}
+    @media (max-width:900px){.grid{grid-template-columns:1fr;grid-template-rows:repeat(9,auto)}}
+  </style>
+</head>
+<body>
+  <h1>بوم کسب‌وکار — بازی‌های رایانه‌ای</h1>
+
+  <div class="controls">
+    <button class="donate-button" id="btn-donate">حمایت</button>
+    <button class="theme-button" id="btn-theme">تغییر رنگ</button>
+    <div class="example-buttons">
+      <button id="btn-ps">پلی‌استیشن</button>
+      <button id="btn-pc">کامپیوتر شخصی</button>
+      <button id="btn-tm">مدیریت وظایف</button>
+    </div>
+    <div class="action-buttons">
+      <button id="btn-save-download">ذخیره و دانلود</button>
+      <button id="btn-risk-matrix">ماتریس ریسک</button>
+    </div>
+  </div>
+
+  <main class="grid" id="bmc-container">
+    <section class="panel" id="kp"><h2>شریک‌های کلیدی</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="vp"><h2>پیشنهاد ارزش</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="cr"><h2>رابطه با مشتری</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="ka"><h2>فعالیت‌های کلیدی</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="ch"><h2>کانال‌ها</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="cs"><h2>بخش مشتریان</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="kr"><h2>منابع کلیدی</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="cost"><h2>ساختار هزینه</h2><div class="notes" contenteditable="true"></div></section>
+    <section class="panel" id="rev"><h2>جریان‌های درآمدی</h2><div class="notes" contenteditable="true"></div></section>
+  </main>
+
+  <script>
+    function createNote(text){
+      const n = document.createElement('div');
+      n.className = 'note';
+      const c = document.createElement('div');
+      c.className='content';
+      c.contentEditable = true;
+      c.innerText = text;
+      n.appendChild(c);
+      return n;
+    }
+
+    const psItems = [
+      'فناوری کنترلر DualSense و تجربه‌ی لمسی واقعی.',
+      'بازی‌های انحصاری پلی‌استیشن با گرافیک بالا و داستان عمیق.'
+    ];
+
+    const pcItems = [
+      'قدرت سخت‌افزار بالا برای اجرای بازی‌های سنگین.',
+      'امکان شخصی‌سازی، مود و جامعه‌ی فعال گیمرها.'
+    ];
+
+    const tmItems = [
+      'برنامه‌ریزی دقیق مراحل توسعه بازی.',
+      'تخصیص وظایف به اعضای تیم و مدیریت زمان.'
+    ];
+
+    function clearAllNotes(){
+      document.querySelectorAll('.notes').forEach(sec => sec.innerHTML = '');
+    }
+
+    function addTwoNotesToEachSection(items){
+      const sections = document.querySelectorAll('.notes');
+      sections.forEach(sec => {
+        sec.appendChild(createNote(items[0]));
+        sec.appendChild(createNote(items[1]));
+      });
+    }
+
+    document.getElementById('btn-ps').addEventListener('click', ()=>{
+      clearAllNotes();
+      addTwoNotesToEachSection(psItems);
+    });
+
+    document.getElementById('btn-pc').addEventListener('click', ()=>{
+      clearAllNotes();
+      addTwoNotesToEachSection(pcItems);
+    });
+
+    document.getElementById('btn-tm').addEventListener('click', ()=>{
+      clearAllNotes();
+      addTwoNotesToEachSection(tmItems);
+    });
+
+    document.getElementById('btn-save-download').addEventListener('click', ()=>{
+      const data = {};
+      document.querySelectorAll('.panel').forEach(panel => {
+        const key = panel.id;
+        const notes = Array.from(panel.querySelectorAll('.content')).map(n => n.innerText);
+        data[key] = notes;
+      });
+      const json = JSON.stringify(data, null, 2);
+      const blob = new Blob([json], {type: 'application/json'});
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'داده‌های_بوم_کسب_و_کار.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    document.getElementById('btn-risk-matrix').addEventListener('click', ()=>{
+      const errorRate = Math.floor(Math.random() * 21);
+      alert(`درصد خطای شما: ${errorRate}%`);
+    });
+
+    document.getElementById('btn-theme').addEventListener('click', ()=>{
+      for(let i=0;i<50;i++){
+        const newBg = '#' + Math.floor(Math.random()*16777215).toString(16);
+        const newColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+        document.documentElement.style.setProperty('--bg', newBg);
+        document.documentElement.style.setProperty('--accent', newColor);
+        document.body.style.background = `linear-gradient(180deg, ${newBg} 0%, ${newBg} 100%)`;
+        document.body.style.color = newColor;
+      }
+    });
+
+    document.getElementById('btn-donate').addEventListener('click', ()=>{
+      const confirmOpen = confirm('شما به سایت رسمی درگاه پرداخت زرین‌پال هدایت می‌شوید. ادامه می‌دهید؟');
+      if(!confirmOpen) return;
+      window.open('https://www.zarinpal.com/', '_blank');
+    });
+  </script>
+</body>
+</html>
